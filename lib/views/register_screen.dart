@@ -2,7 +2,12 @@ import 'package:birthdayku/views/authentication_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({
+    super.key,
+    /*required this.getUserID*/
+  });
+
+  // final void Function(String userID) getUserID;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();

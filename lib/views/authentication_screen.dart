@@ -1,10 +1,15 @@
-import 'dart:ffi';
-
+import 'package:birthdayku/data/user_data.dart';
 import 'package:birthdayku/views/register_screen.dart';
+import 'package:birthdayku/views/tabs.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationScreen extends StatefulWidget {
-  const AuthenticationScreen({super.key});
+  const AuthenticationScreen({
+    super.key,
+    /*required this.getUserID*/
+  });
+
+  // final void Function(String userID) getUserID;
 
   @override
   State<AuthenticationScreen> createState() => _AuthenticationScreenState();
@@ -21,8 +26,24 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     if (isValid) {
       _form.currentState!.save();
-      print(_enteredEmail);
-      print(_enteredPassword);
+
+      for (var user in allUser) {
+        if (user.email.compareTo(_enteredEmail) == 0 &&
+            user.password.compareTo(_enteredPassword) == 0) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => TabsScreen(
+                userID: user.id,
+              ),
+            ),
+          );
+        } else {
+          const SnackBar(
+            content: Text("account doesn't exist!"),
+          );
+        }
+      }
     }
   }
 

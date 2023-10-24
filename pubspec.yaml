@@ -62,6 +62,21 @@ flutter:
   assets:
       - assets/img/logo_login.png
       - assets/img/logo_signup.png
+      - assets/img/catering.png
+      - assets/img/concept.png
+      - assets/img/venue.png
+      - assets/img/flexibility.png
+      - assets/img/idea.png
+      - assets/img/scale.png
+      - assets/img/target.png
+      - assets/img/regisUser.png
+      - assets/img/event.png
+      - assets/img/cart.png
+      - assets/img/userImg/pp_default.png
+
+
+
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

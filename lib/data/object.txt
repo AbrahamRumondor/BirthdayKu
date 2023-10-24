@@ -1,0 +1,58 @@
+object:
+
+- cart (b)
+title,
+cartID,
+itemID,
+totalPrice,
+userID
+
+
+- eo (e)
+eoID, 
+name, 
+location, 
+price, 
+desc, 
+totalReview
+
+
+- venue (v)
+venueID, 
+name, 
+location, 
+price, 
+desc, 
+totalReview (klo memungkinkan bikin tab review, )
+
+- catering (c)
+cateringID, 
+name, 
+location, 
+price, 
+desc, 
+totalReview
+
+- booking history (hasil cart tapi yang dimasukkan di list baru)
+
+- user (u)
+userID
+name
+email
+password
+cart
+promo
+
+- promo (p)
+promoID
+title
+price
+activeDate
+
+
+- review (r)
+type
+reviewID
+userID
+itemID
+reviewText
