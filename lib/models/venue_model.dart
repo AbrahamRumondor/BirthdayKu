@@ -7,11 +7,13 @@ class Venue extends Product {
     required String location,
     required String name,
     required String price,
+    required String image,
   }) : super(
           id: id,
           desc: desc,
           location: location,
           name: name,
           price: price,
+          image: image,
         );
 }

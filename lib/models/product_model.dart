@@ -5,6 +5,7 @@ abstract class Product {
     required this.location,
     required this.name,
     required this.price,
+    required this.image,
   });
 
   final String id;
@@ -12,4 +13,5 @@ abstract class Product {
   final String location;
   final String price;
   final String desc;
+  final String image;
 }

@@ -1,6 +1,5 @@
 import 'package:birthdayku/data/user_data.dart';
 import 'package:birthdayku/models/user_model.dart';
-import 'package:birthdayku/views/authentication_screen.dart';
 import 'package:birthdayku/views/cart_screen.dart';
 import 'package:birthdayku/views/home_screen.dart';
 import 'package:birthdayku/views/search_screen.dart';
@@ -40,7 +39,7 @@ class _TabsScreenState extends State<TabsScreen> {
     var activePageTitle = 'Home Screen';
 
     if (_selectedPageIndex == 0) {
-      activePage = const SearchScreen();
+      activePage = SearchScreen(userID: widget.userID);
       activePageTitle = 'Search Screen';
     } else if (_selectedPageIndex == 1) {
       activePage = HomeScreen(userID: widget.userID);
