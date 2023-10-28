@@ -74,6 +74,10 @@ flutter:
       - assets/img/cart.png
       - assets/img/userImg/pp_default.png
       - assets/img/cateringImg/steak.png
+      - assets/img/rate.png
+      - assets/img/nike.png
+      - assets/img/closeBottomSheet.png
+      
 
 
 

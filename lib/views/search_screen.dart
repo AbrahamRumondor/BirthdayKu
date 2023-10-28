@@ -1,5 +1,8 @@
 import 'package:birthdayku/widgets/catering_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:birthdayku/data/catering_data.dart';
+import 'package:birthdayku/data/eo_data.dart';
+import 'package:birthdayku/data/venue_data.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key, required this.userID});
@@ -15,11 +18,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _tes() {
     if (_productDisplay == 'venue') {
-      return const Text("hi");
+      return const ItemDisplay(product: venueData);
     } else if (_productDisplay == 'eo') {
-      return const Text("hi");
+      return const ItemDisplay(product: eventOrganizerData);
     } else {
-      return const CateringDisplay();
+      return const ItemDisplay(product: cateringData);
     }
   }
 
@@ -29,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Column(
         children: [
           const SizedBox(
-            height: 25,
+            height: 40,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -65,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           ),
           const SizedBox(
-            height: 15,
+            height: 20,
           ),
           Expanded(
             child: _tes(),
