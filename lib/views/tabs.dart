@@ -3,6 +3,7 @@ import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/views/cart_screen.dart';
 import 'package:birthdayku/views/home_screen.dart';
 import 'package:birthdayku/views/search_screen.dart';
+import 'package:birthdayku/widgets/create_dialog.dart';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _TabsScreenState extends State<TabsScreen> {
       activePage = HomeScreen(userID: widget.userID);
       activePageTitle = 'Home Screen';
     } else {
-      activePage = const CartScreen();
+      activePage = CartScreen(myContext: context);
       activePageTitle = 'Cart Screen';
     }
     return Scaffold(
@@ -80,25 +81,26 @@ class _TabsScreenState extends State<TabsScreen> {
                 ],
               ),
               Expanded(child: Container()),
-              InkWell(
-                onTap: () {
-                  // Define the action to perform when the icon is tapped.
-                  () {};
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => CreateDialog(),
+                  );
                 },
-                child: Image.asset(
+                icon: Image.asset(
                   'assets/img/cart.png',
                   width: 35,
                 ),
               ),
               const SizedBox(
-                width: 20,
+                width: 10,
               ),
-              InkWell(
-                onTap: () {
-                  // Define the action to perform when the icon is tapped.
-                  () {};
+              IconButton(
+                onPressed: () {
+                  print("clicked");
                 },
-                child: ClipOval(
+                icon: ClipOval(
                   child: Image.asset(
                     'assets/img/userImg/pp_default.png',
                     width: 40.0,
