@@ -1,5 +1,6 @@
 import 'package:birthdayku/data/cart_data.dart';
 import 'package:birthdayku/models/cart_model.dart';
+import 'package:birthdayku/widgets/cart_details.dart';
 import 'package:flutter/material.dart';
 import 'package:birthdayku/widgets/create_dialog.dart';
 
@@ -90,7 +91,13 @@ class CartScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(myContext).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => CartDetails(cart: cart),
+                                ),
+                              );
+                            },
                             child: const Text('Detail'),
                           ),
                         ],

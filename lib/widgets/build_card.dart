@@ -1,4 +1,5 @@
 import 'package:birthdayku/models/product_model.dart';
+import 'package:birthdayku/widgets/choose_cart.dart';
 import 'package:flutter/material.dart';
 
 class BuildCard extends StatelessWidget {
@@ -64,7 +65,18 @@ class BuildCard extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              Text(item.type),
+              Row(
+                children: [
+                  const Icon(Icons.location_on_outlined, size: 20),
+                  Text(
+                    item.location,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
               // vertical divider
               const Divider(
                 color: Color.fromRGBO(227, 236, 245, 1),
@@ -117,8 +129,13 @@ class BuildCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () {},
-                    child: Text("button"),
+                    onPressed: () {
+                      showDialog(
+                        context: myContext,
+                        builder: (ctx) => ChooseCart(prod: item),
+                      );
+                    },
+                    child: Text("Pilih"),
                   ),
                 ),
               ),

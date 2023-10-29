@@ -78,6 +78,11 @@ flutter:
       - assets/img/rate.png
       - assets/img/nike.png
       - assets/img/closeBottomSheet.png
+      - assets/img/location_logo.png
+      - assets/img/date_logo.png
+      - assets/img/cateringImg/catering_logo.png
+      - assets/img/eoImg/eo_logo.png
+      - assets/img/venueImg/venue_logo.png
       
 
 
