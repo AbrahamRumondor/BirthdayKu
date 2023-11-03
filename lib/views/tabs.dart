@@ -1,3 +1,4 @@
+import 'package:birthdayku/data/promo_data.dart';
 import 'package:birthdayku/data/user_data.dart';
 import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/views/cart_screen.dart';
@@ -24,6 +25,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     super.initState();
     account = allUser.firstWhere((user) => user.id == widget.userID);
+    if (account != null) account!.promos.addAll(allPromo);
   }
 
   void _selectPage(int index) {
@@ -46,7 +48,10 @@ class _TabsScreenState extends State<TabsScreen> {
       activePage = HomeScreen(userID: widget.userID);
       activePageTitle = 'Home Screen';
     } else {
-      activePage = CartScreen(myContext: context);
+      activePage = CartScreen(
+        myContext: context,
+        account: account!,
+      );
       activePageTitle = 'Cart Screen';
     }
     return Scaffold(

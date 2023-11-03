@@ -1,23 +1,32 @@
 import 'package:birthdayku/models/cart_model.dart';
 import 'package:birthdayku/models/product_model.dart';
+import 'package:birthdayku/models/promo_model.dart';
+import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/models/venue_model.dart';
+import 'package:birthdayku/widgets/choose_promo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CartDetails extends StatelessWidget {
-  CartDetails({super.key, required this.cart});
+class CartDetails extends StatefulWidget {
+  CartDetails({super.key, required this.cart, required this.account});
 
   final Cart cart;
+  final User account;
 
+  @override
+  State<CartDetails> createState() => _CartDetailsState();
+}
+
+class _CartDetailsState extends State<CartDetails> {
   final formatter = DateFormat("EEEEEEEEEE, MMM d, yyyy");
 
   Product getVenue() {
-    for (Product p in cart.itemID) {
+    for (Product p in widget.cart.itemID) {
       if (p is Venue) {
         return p;
       }
     }
-    return cart.itemID[0];
+    return widget.cart.itemID[0];
   }
 
   String getLogo(String id) {
@@ -32,17 +41,17 @@ class CartDetails extends StatelessWidget {
 
   String getTotalPrice() {
     int totalPrice = 0;
-    for (Product item in cart.itemID) {
+    for (Product item in widget.cart.itemID) {
       totalPrice += int.parse(item.price);
     }
-
+    totalPrice *= 1000;
     return totalPrice.toString();
   }
 
   Widget allItems(Product item) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
         Row(
@@ -51,14 +60,14 @@ class CartDetails extends StatelessWidget {
               getLogo(item.id),
               width: 30,
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Text(item.name),
             Expanded(child: Container()),
             Text(
               "Rp ${item.price}000",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -66,11 +75,65 @@ class CartDetails extends StatelessWidget {
     );
   }
 
+  Promo? promoUsed;
+
+  void _getPromo(Promo promo) {
+    setState(() {
+      promoUsed = promo;
+    });
+  }
+
+  Widget _promoStatus() {
+    return promoUsed == null
+        ? const SizedBox(
+            height: 10,
+          )
+        : Row(
+            children: [
+              const Icon(Icons.discount),
+              const SizedBox(
+                width: 17,
+              ),
+              Text(promoUsed!.title),
+              Expanded(child: Container()),
+              Text(
+                "Rp ${promoUsed!.value.toString()}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          );
+  }
+
+  Widget calculateTotalPayment() {
+    return promoUsed == null
+        ? Text(
+            "Rp ${getTotalPrice()}",
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          )
+        : Column(
+            children: [
+              Text(
+                "Rp ${getTotalPrice()}",
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    decoration: TextDecoration.lineThrough,
+                    color: Colors.black38),
+              ),
+              Text(
+                "Rp ${(int.parse(getTotalPrice()) - promoUsed!.value).toString()}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ],
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CART DETAILS"),
+        title: const Text("Cart Details"),
       ),
       body: Column(
         children: [
@@ -78,17 +141,57 @@ class CartDetails extends StatelessWidget {
             color: Color.fromRGBO(227, 236, 245, 1),
             thickness: 1.5,
           ),
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              cart.title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          GestureDetector(
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => choosePromo(
+                      account: widget.account,
+                      totalPrice: int.parse(
+                        getTotalPrice(),
+                      ),
+                      promoStatus: _getPromo,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                height: 50,
+                color: Colors.grey.shade200,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.discount_outlined,
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "Check promo to get discount",
+                        style: TextStyle(color: Colors.black54, fontSize: 15),
+                      ),
+                      Expanded(child: Container()),
+                      const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Colors.black54,
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.85,
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.55,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 1)),
             child: Padding(
@@ -96,20 +199,55 @@ class CartDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Payment"),
+                  Center(
+                    child: Text(
+                      widget.cart.title,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Text(
+                    "Payment",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   // Text(getVenue().location),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Text(
-                    "${formatter.format(cart.startDate)} - ${formatter.format(cart.endDate)}",
+                    "${formatter.format(widget.cart.startDate)} - ${formatter.format(widget.cart.endDate)}",
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: cart.itemID.length,
+                      itemCount: widget.cart.itemID.length,
                       itemBuilder: (context, index) => allItems(
-                        cart.itemID[index],
+                        widget.cart.itemID[index],
                       ),
                     ),
                   ),
-                  Expanded(child: Container()),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 0, left: 6),
+                      child: _promoStatus(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   const Divider(
                     color: Color.fromRGBO(117, 122, 127, 1),
                     thickness: 1.5,
@@ -118,6 +256,7 @@ class CartDetails extends StatelessWidget {
                     height: 15,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         "Total Payment",
@@ -125,11 +264,7 @@ class CartDetails extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Expanded(child: Container()),
-                      Text(
-                        "Rp ${getTotalPrice()}000",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
+                      calculateTotalPayment(),
                     ],
                   ),
                   const SizedBox(
@@ -139,7 +274,7 @@ class CartDetails extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Center(

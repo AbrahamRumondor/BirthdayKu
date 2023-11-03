@@ -1,4 +1,8 @@
+import 'package:birthdayku/models/promo_model.dart';
+import 'package:birthdayku/models/user_model.dart';
+import 'package:birthdayku/widgets/promo_list.dart';
 import 'package:flutter/material.dart';
+import 'package:birthdayku/data/user_data.dart';
 
 Widget rowItem({required String asset, required String text}) {
   return Row(
@@ -25,14 +29,24 @@ class HomeScreen extends StatelessWidget {
 
   final String userID;
 
+  User getUser() {
+    for (User user in allUser) {
+      if (user.id.compareTo(userID) == 0) {
+        return user;
+      }
+    }
+    return User(id: 'p?', name: "?", email: "?", password: "?");
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          // mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const Text(
               "Our Last Event",
               style: TextStyle(
@@ -87,6 +101,29 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(
               height: 30,
+            ),
+            const Text(
+              "My Coupon",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 150,
+              child: ListView.builder(
+                itemCount: getUser().promos.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) =>
+                    promoItems(getUser().promos[index], context),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
             ),
             Container(
               padding: const EdgeInsets.only(

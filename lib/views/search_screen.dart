@@ -26,6 +26,15 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  ButtonStyle _changeButtonColor(String check) {
+    return _productDisplay.compareTo(check) == 0
+        ? ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromRGBO(156, 45, 65, 1),
+            foregroundColor: Colors.white,
+          )
+        : ElevatedButton.styleFrom(backgroundColor: Colors.white);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -38,6 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
+                style: _changeButtonColor("venue"),
                 onPressed: () {
                   setState(() {
                     _productDisplay = 'venue';
@@ -46,6 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: const Text("Venue"),
               ),
               ElevatedButton(
+                style: _changeButtonColor("eo"),
                 onPressed: () {
                   setState(
                     () {
@@ -56,6 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: const Text("Event Organizer"),
               ),
               ElevatedButton(
+                style: _changeButtonColor("catering"),
                 onPressed: () {
                   setState(
                     () {
