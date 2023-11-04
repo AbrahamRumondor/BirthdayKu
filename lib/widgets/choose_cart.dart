@@ -45,6 +45,19 @@ class _ChooseCartState extends State<ChooseCart> {
       );
     }
 
+    Widget _cartIsEmpty() {
+      return cartData.isNotEmpty
+          ? ListView.builder(
+              itemCount: cartData.length,
+              itemBuilder: (context, index) => allCarts(cartData[index], index),
+            )
+          : const Center(
+              child: Text(
+              "You don't have any cart",
+              style: TextStyle(fontSize: 16),
+            ));
+    }
+
     void submit(Product p) {
       for (var i = 0; i < isChecked.length; i++) {
         if (isChecked[i] == true) {
@@ -75,11 +88,7 @@ class _ChooseCartState extends State<ChooseCart> {
                     'Choose Cart'),
                 const SizedBox(height: 15),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: cartData.length,
-                    itemBuilder: (context, index) =>
-                        allCarts(cartData[index], index),
-                  ),
+                  child: _cartIsEmpty(),
                 ),
                 ElevatedButton(
                   style: ButtonStyle(

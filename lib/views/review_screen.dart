@@ -5,23 +5,13 @@ import 'package:birthdayku/models/review_model.dart';
 import 'package:birthdayku/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:birthdayku/controller/review_tools.dart';
 
 class ReviewScreen extends StatelessWidget {
   const ReviewScreen({super.key, required this.account, required this.item});
 
   final User account;
   final Product item;
-
-  List<Review> _getValidReview() {
-    List<Review> reviewList = [];
-    for (Review review in allReview) {
-      if (review.itemID.compareTo(item.id) == 0) {
-        reviewList.add(review);
-      }
-    }
-
-    return reviewList;
-  }
 
   String _getUserName(Review review) {
     for (User user in allUser) {
@@ -55,7 +45,7 @@ class ReviewScreen extends StatelessWidget {
                 Text(
                   _getUserName(review),
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -65,18 +55,27 @@ class ReviewScreen extends StatelessWidget {
               height: 5,
             ),
             RatingBar.builder(
-                ignoreGestures: true,
-                initialRating: review.value,
-                minRating: 1,
-                maxRating: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4),
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemBuilder: (context, _) => Icon(Icons.star),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                })
+              itemSize: 20,
+              ignoreGestures: true,
+              initialRating: review.value,
+              minRating: 1,
+              maxRating: 5,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemBuilder: (context, _) =>
+                  Icon(Icons.star, color: Colors.amber),
+              onRatingUpdate: (rating) {
+                print(rating);
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(review.content),
+            SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
@@ -97,9 +96,9 @@ class ReviewScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _getValidReview().length,
+              itemCount: getValidReview(item).length,
               itemBuilder: (context, index) =>
-                  reviewItems(_getValidReview()[index]),
+                  reviewItems(getValidReview(item)[index]),
             ),
           ),
         ],

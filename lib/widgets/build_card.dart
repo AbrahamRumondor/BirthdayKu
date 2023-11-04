@@ -1,8 +1,11 @@
+import 'package:birthdayku/data/review_data.dart';
 import 'package:birthdayku/models/product_model.dart';
+import 'package:birthdayku/models/review_model.dart';
 import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/views/review_screen.dart';
 import 'package:birthdayku/widgets/choose_cart.dart';
 import 'package:flutter/material.dart';
+import 'package:birthdayku/controller/review_tools.dart';
 
 class BuildCard extends StatelessWidget {
   const BuildCard(
@@ -131,22 +134,25 @@ class BuildCard extends StatelessWidget {
                   },
                   child: Row(
                     children: [
-                      Text("Customer Reviews"),
+                      Text(
+                        "Customer Reviews",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       Expanded(child: Container()),
                       Image.asset(
                         "assets/img/rate.png",
                         width: 15,
                       ),
-                      const Text(
-                        "4,9 ",
+                      Text(
+                        "${countReviewRating(getValidReview(item))} ",
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
                       ),
-                      const Text(
-                        " (47 reviews)",
+                      Text(
+                        " (${getValidReview(item).length} reviews)",
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           fontSize: 13,
