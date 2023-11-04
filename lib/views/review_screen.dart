@@ -97,8 +97,8 @@ class ReviewScreen extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemCount: getValidReview(item).length,
-              itemBuilder: (context, index) =>
-                  reviewItems(getValidReview(item)[index]),
+              itemBuilder: (context, index) => reviewItems(getValidReview(
+                  item)[getValidReview(item).length - index - 1]),
             ),
           ),
         ],

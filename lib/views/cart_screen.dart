@@ -5,18 +5,22 @@ import 'package:birthdayku/widgets/cart_details.dart';
 import 'package:flutter/material.dart';
 import 'package:birthdayku/widgets/create_dialog.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key, required this.myContext, required this.account});
 
   final BuildContext myContext;
   final User account;
 
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  String button = "cart";
+
   Widget cartItems(Cart cart) {
     return Column(
       children: [
-        const SizedBox(
-          height: 35,
-        ),
         Container(
           margin: const EdgeInsets.only(
             left: 30,
@@ -51,7 +55,7 @@ class CartScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(myContext).size.width * 0.5,
+                            width: MediaQuery.of(context).size.width * 0.5,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -94,12 +98,14 @@ class CartScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.of(myContext).push(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
                                   settings:
                                       RouteSettings(name: "/cart_details"),
-                                  builder: (context) =>
-                                      CartDetails(cart: cart, account: account),
+                                  builder: (context) => CartDetails(
+                                      cart: cart,
+                                      account: widget.account,
+                                      currentPosition: button),
                                 ),
                               );
                             },
@@ -114,38 +120,139 @@ class CartScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(
+          height: 35,
+        ),
       ],
     );
   }
 
+  Widget _chosenButton(BuildContext context) {
+    if (button == "cart") {
+      return cartData.isNotEmpty
+          ? Expanded(
+              child: ListView.builder(
+                itemCount: cartData.length,
+                itemBuilder: (context, index) => cartItems(cartData[index]),
+              ),
+            )
+          : Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "You don't have any cart",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => CreateDialog(),
+                        );
+                      },
+                      child: const Text("Create Cart"),
+                    ),
+                  ],
+                ),
+              ),
+            );
+    } else if (button == "current") {
+      return currentEventData.isNotEmpty
+          ? Expanded(
+              child: ListView.builder(
+                itemCount: currentEventData.length,
+                itemBuilder: (context, index) =>
+                    cartItems(currentEventData[index]),
+              ),
+            )
+          : const Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "You currently don't have any event",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            );
+    } else {
+      return transactionHistoryData.isNotEmpty
+          ? Expanded(
+              child: ListView.builder(
+                itemCount: transactionHistoryData.length,
+                itemBuilder: (context, index) =>
+                    cartItems(transactionHistoryData[index]),
+              ),
+            )
+          : const Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "You don't have any transaction done",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return cartData.isNotEmpty
-        ? ListView.builder(
-            itemCount: cartData.length,
-            itemBuilder: (context, index) => cartItems(cartData[index]),
-          )
-        : Center(
-            child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "You Don't Have Any Cart",
-                style: TextStyle(fontSize: 18),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => CreateDialog(),
-                  );
-                },
-                child: const Text("Create Cart"),
-              ),
-            ],
-          ));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                button = "cart";
+              });
+            },
+            child: Text("Cart"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                button = "current";
+              });
+            },
+            child: Text("Current Events"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                button = "history";
+              });
+            },
+            child: Text("History"),
+          ),
+        ]),
+        SizedBox(
+          height: 20,
+        ),
+        _chosenButton(context),
+      ],
+    );
   }
 }

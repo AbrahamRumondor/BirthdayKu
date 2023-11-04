@@ -88,7 +88,6 @@ class _CreateDialogState extends State<CreateDialog> {
               content: Text("Please fill your cart information"),
             ),
           );
-          print("hi");
         }
       }
     }

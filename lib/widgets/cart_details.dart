@@ -1,17 +1,24 @@
+import 'package:birthdayku/data/cart_data.dart';
 import 'package:birthdayku/models/cart_model.dart';
 import 'package:birthdayku/models/product_model.dart';
 import 'package:birthdayku/models/promo_model.dart';
 import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/models/venue_model.dart';
+import 'package:birthdayku/widgets/cart_button.dart';
 import 'package:birthdayku/widgets/choose_promo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CartDetails extends StatefulWidget {
-  CartDetails({super.key, required this.cart, required this.account});
+  CartDetails(
+      {super.key,
+      required this.cart,
+      required this.account,
+      required this.currentPosition});
 
   final Cart cart;
   final User account;
+  final String currentPosition;
 
   @override
   State<CartDetails> createState() => _CartDetailsState();
@@ -63,7 +70,17 @@ class _CartDetailsState extends State<CartDetails> {
             const SizedBox(
               width: 15,
             ),
-            Text(item.name),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.38,
+              child: Text(
+                item.name,
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
             Expanded(child: Container()),
             Text(
               "Rp ${item.price}000",
@@ -127,6 +144,39 @@ class _CartDetailsState extends State<CartDetails> {
               ),
             ],
           );
+  }
+
+  Cart? reviewCart;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    reviewCart = Cart(
+      id: widget.cart.id,
+      title: widget.cart.title,
+      startDate: widget.cart.startDate,
+      endDate: widget.cart.endDate,
+    );
+    for (Product product in widget.cart.itemID) {
+      reviewCart!.itemID.add(product);
+    }
+    super.initState();
+  }
+
+  void deleteReviewButton(Product itemProduct) {
+    if (reviewCart != null) {
+      setState(
+        () {
+          if (transactionHistoryDataReview.isNotEmpty) {
+            transactionHistoryDataReview
+                .where((element) => element.id == reviewCart!.id)
+                .first
+                .itemID
+                .removeWhere((item) => item.id == itemProduct.id);
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -277,28 +327,14 @@ class _CartDetailsState extends State<CartDetails> {
           const SizedBox(
             height: 20,
           ),
-          Center(
-            child: SizedBox(
-              width: 250,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: const MaterialStatePropertyAll<Color>(
-                    Color.fromRGBO(156, 45, 65, 1),
-                  ),
-                  foregroundColor: const MaterialStatePropertyAll<Color>(
-                    Colors.white,
-                  ),
-                  shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Text("Lanjut ke WhatsApp"),
-              ),
-            ),
-          ),
+          getBottomStyle(
+            widget.cart,
+            context,
+            int.parse(getTotalPrice()),
+            widget.currentPosition,
+            widget.account,
+            deleteReviewButton,
+          )
         ],
       ),
     );
