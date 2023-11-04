@@ -1,13 +1,20 @@
 import 'package:birthdayku/models/product_model.dart';
+import 'package:birthdayku/models/user_model.dart';
+import 'package:birthdayku/views/review_screen.dart';
 import 'package:birthdayku/widgets/choose_cart.dart';
 import 'package:flutter/material.dart';
 
 class BuildCard extends StatelessWidget {
-  const BuildCard({super.key, required this.item, required this.myContext});
+  const BuildCard(
+      {super.key,
+      required this.item,
+      required this.myContext,
+      required this.account});
 
   final BuildContext myContext;
 
   final Product item;
+  final User account;
 
   void _openItemDetail() {
     showModalBottomSheet(
@@ -111,7 +118,54 @@ class BuildCard extends StatelessWidget {
                   ),
                 ),
               ),
-
+              SizedBox(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      myContext,
+                      MaterialPageRoute(
+                        builder: (ctx) =>
+                            ReviewScreen(account: account, item: item),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Text("Customer Reviews"),
+                      Expanded(child: Container()),
+                      Image.asset(
+                        "assets/img/rate.png",
+                        width: 15,
+                      ),
+                      const Text(
+                        "4,9 ",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const Text(
+                        " (47 reviews)",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Center(
                 child: SizedBox(
                   width: 250,

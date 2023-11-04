@@ -1,3 +1,4 @@
+import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/widgets/product_list_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:birthdayku/data/catering_data.dart';
@@ -5,9 +6,9 @@ import 'package:birthdayku/data/eo_data.dart';
 import 'package:birthdayku/data/venue_data.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key, required this.userID});
+  const SearchScreen({super.key, required this.account});
 
-  final String userID;
+  final User account;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -18,11 +19,20 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _tes() {
     if (_productDisplay == 'venue') {
-      return const ItemDisplay(product: venueData);
+      return ItemDisplay(
+        product: venueData,
+        account: widget.account,
+      );
     } else if (_productDisplay == 'eo') {
-      return const ItemDisplay(product: eventOrganizerData);
+      return ItemDisplay(
+        product: eventOrganizerData,
+        account: widget.account,
+      );
     } else {
-      return const ItemDisplay(product: cateringData);
+      return ItemDisplay(
+        product: cateringData,
+        account: widget.account,
+      );
     }
   }
 

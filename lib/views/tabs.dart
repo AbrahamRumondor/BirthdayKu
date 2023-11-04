@@ -42,7 +42,9 @@ class _TabsScreenState extends State<TabsScreen> {
     var activePageTitle = 'Home Screen';
 
     if (_selectedPageIndex == 0) {
-      activePage = SearchScreen(userID: widget.userID);
+      activePage = SearchScreen(
+        account: account!,
+      );
       activePageTitle = 'Search Screen';
     } else if (_selectedPageIndex == 1) {
       activePage = HomeScreen(userID: widget.userID);
