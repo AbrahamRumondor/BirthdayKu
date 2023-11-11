@@ -214,8 +214,8 @@ class BuildCard extends StatelessWidget {
           onTap: _openItemDetail,
           child: Container(
             margin: const EdgeInsets.only(
-              left: 30,
-              right: 30,
+              left: 25,
+              right: 25,
             ),
             decoration: BoxDecoration(
               boxShadow: [
@@ -238,7 +238,8 @@ class BuildCard extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/img/cateringImg/steak.png',
-                    width: MediaQuery.of(context).size.height * 0.18,
+                    width: MediaQuery.of(context).size.height * 0.2,
+                    fit: BoxFit.cover,
                   ),
                   Expanded(
                     child: Padding(
@@ -270,24 +271,37 @@ class BuildCard extends StatelessWidget {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.025),
+                                  MediaQuery.of(context).size.height * 0.015),
+                          Row(
+                            children: [
+                              Expanded(child: Container()),
+                              Text(
+                                "Rp${item.price}000",
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
                           Row(
                             children: [
                               Expanded(child: Container()),
                               Image.asset(
                                 "assets/img/rate.png",
-                                width: 15,
+                                width: 13,
                               ),
-                              const Text(
-                                "4,9 ",
+                              Text(
+                                "${countReviewRating(getValidReview(item))} ",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13,
                                 ),
                               ),
-                              const Text(
-                                " (47 reviews)",
+                              Text(
+                                " (${getValidReview(item).length} reviews)",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   fontSize: 13,
