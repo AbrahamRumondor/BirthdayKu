@@ -6,10 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:birthdayku/widgets/create_dialog.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key, required this.myContext, required this.account});
+  const CartScreen(
+      {super.key,
+      required this.myContext,
+      required this.account,
+      required this.btn});
 
   final BuildContext myContext;
   final User account;
+  final String btn;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -17,6 +22,13 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   String button = "cart";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    button = widget.btn;
+    super.initState();
+  }
 
   Widget cartItems(Cart cart) {
     return Column(

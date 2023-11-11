@@ -35,6 +35,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             MaterialPageRoute(
               builder: (ctx) => TabsScreen(
                 userID: user.id,
+                activePage: 'Home Screen',
+                cartState: "cart",
               ),
             ),
           );
