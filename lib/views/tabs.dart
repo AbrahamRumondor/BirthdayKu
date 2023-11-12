@@ -53,19 +53,36 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  Widget activePage = Text("");
+
+  String searchCategory = 'venue';
+
+  void goSearchScreen(String input) {
+    setState(() {
+      _selectedPageIndex = 0;
+      searchCategory = input;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget activePage = HomeScreen(
+    activePage = HomeScreen(
       userID: widget.userID,
+      goSearchScreen: goSearchScreen,
     );
 
     if (_selectedPageIndex == 0) {
+      print("TES MASUK KE SINI");
       activePage = SearchScreen(
         account: account!,
+        category: searchCategory,
       );
       activePageTitle = 'Search Screen';
     } else if (_selectedPageIndex == 1) {
-      activePage = HomeScreen(userID: widget.userID);
+      activePage = HomeScreen(
+        userID: widget.userID,
+        goSearchScreen: goSearchScreen,
+      );
       activePageTitle = 'Home Screen';
     } else {
       activePage = CartScreen(

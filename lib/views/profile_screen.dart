@@ -135,11 +135,6 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       onTap: () {
-        // optionIcons("history", "Booking History", context),
-        //   optionIcons("personal_data", "Personal Data", context),
-        //   optionIcons("mail", "Saran dan Masukan", context),
-        //   optionIcons("wa", "Kontak Kami", context),
-
         if (msg.compareTo("Booking History") == 0) {
           Navigator.pushReplacement(
             context,

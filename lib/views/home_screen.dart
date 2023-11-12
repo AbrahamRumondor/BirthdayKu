@@ -1,8 +1,12 @@
-import 'package:birthdayku/models/promo_model.dart';
+import 'package:birthdayku/data/last_event.dart';
 import 'package:birthdayku/models/user_model.dart';
+import 'package:birthdayku/views/cart_screen.dart';
+import 'package:birthdayku/views/profile_screen.dart';
+import 'package:birthdayku/views/search_screen.dart';
 import 'package:birthdayku/widgets/promo_list.dart';
 import 'package:flutter/material.dart';
 import 'package:birthdayku/data/user_data.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 Widget rowItem({required String asset, required String text}) {
   return Row(
@@ -25,8 +29,10 @@ Widget rowItem({required String asset, required String text}) {
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.userID});
+  const HomeScreen(
+      {super.key, required this.userID, required this.goSearchScreen});
 
+  final Function(String) goSearchScreen;
   final String userID;
 
   User getUser() {
@@ -54,6 +60,36 @@ class HomeScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 200.0,
+                autoPlay: true,
+                enlargeCenterPage: true,
+              ),
+              items: imgs.map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Image.asset(
+                          i,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
             const Text(
               "Our Service",
               style: TextStyle(
@@ -70,17 +106,17 @@ class HomeScreen extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     // Define the action to perform when the icon is tapped.
-                    () {};
+                    goSearchScreen('venue');
                   },
                   child: Image.asset(
-                    'assets/img/catering.png',
+                    'assets/img/venue.png',
                     width: 55,
                   ),
                 ),
                 InkWell(
                   onTap: () {
                     // Define the action to perform when the icon is tapped.
-                    () {};
+                    goSearchScreen('eo');
                   },
                   child: Image.asset(
                     'assets/img/concept.png',
@@ -90,10 +126,10 @@ class HomeScreen extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     // Define the action to perform when the icon is tapped.
-                    () {};
+                    goSearchScreen('catering');
                   },
                   child: Image.asset(
-                    'assets/img/venue.png',
+                    'assets/img/catering.png',
                     width: 55,
                   ),
                 ),

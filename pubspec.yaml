@@ -35,6 +35,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   url_launcher: ^6.1.11
   easy_search_bar: ^2.5.0
+  carousel_slider: ^4.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -93,6 +94,11 @@ flutter:
       - assets/img/userImg/personal_data.png
       - assets/img/userImg/wa.png
       - assets/img/userImg/log_out.png
+
+      - assets/img/eventImg/event1.jpg
+      - assets/img/eventImg/event2.png
+      - assets/img/eventImg/event3.jpg
+      - assets/img/eventImg/event4.png
       
 
 
