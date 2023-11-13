@@ -64,3 +64,5 @@ final List<Promo> allPromo = [
     value: 300000,
   ),
 ];
+
+final List<Promo> usedPromoInCart = []; // trus ubah idnya jadi id cartnya.

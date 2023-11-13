@@ -10,7 +10,7 @@ final List<User> allUser = [
   User(
       id: 'u1',
       name: 'John Doe',
-      email: 'john@example.com',
+      email: 'johnjoh@example.com',
       password: 'password1'),
   User(
       id: 'u2',

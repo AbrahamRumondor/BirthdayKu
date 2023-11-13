@@ -1,3 +1,5 @@
+import 'package:birthdayku/data/user_data.dart';
+import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/views/authentication_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +13,39 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _form = GlobalKey<FormState>();
+
   var _enteredPassword = '';
   var _enteredEmail = '';
   var _enteredName = '';
+  var _confirmPass = '';
+
+  void _submit() {
+    final isValid = _form.currentState!.validate();
+
+    if (isValid) {
+      _form.currentState!.save();
+
+      if (_enteredPassword.compareTo(_confirmPass) == 0) {
+        allUser.add(User(
+            id: "u${allUser.length}",
+            name: _enteredName,
+            email: _enteredEmail,
+            password: _enteredPassword));
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => const AuthenticationScreen(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("password you entered wrong"),
+        ));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     top: 0,
                   ),
                   child: Form(
+                    key: _form,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,20 +128,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: TextInputType.emailAddress,
                           autocorrect: false,
                           textCapitalization: TextCapitalization.none,
-                          // validator: (value) {
-                          //   if (value == null || !value.contains('@')) {
-                          //     return 'please enter a valid name';
-                          //   }
-                          //   return null;
-                          // },
-                          onSaved: (value) {},
+                          validator: (value) {
+                            if (value == null) {
+                              return 'please enter a valid name';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _enteredName = value!;
+                          },
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         TextFormField(
-                          decoration: const InputDecoration(
-                              labelText: 'Email or phone number'),
+                          decoration: const InputDecoration(labelText: 'Email'),
                           keyboardType: TextInputType.emailAddress,
                           autocorrect: false,
                           textCapitalization: TextCapitalization.none,
@@ -147,12 +181,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               labelText: 'Confirm Password'),
                           obscureText: true,
                           validator: (value) {
-                            if (value == null ||
-                                !(value.length >= 8) ||
-                                value.compareTo(_enteredPassword) != 0) {
+                            if (value == null || !(value.length >= 8)) {
                               return 'password you entered wrong';
                             }
                             return null;
+                          },
+                          onSaved: (value) {
+                            _confirmPass = value!;
                           },
                         ),
                         const SizedBox(
@@ -177,7 +212,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: _submit,
                             child: const Text('Create Account'),
                           ),
                         ),

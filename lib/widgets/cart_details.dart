@@ -1,4 +1,5 @@
 import 'package:birthdayku/data/cart_data.dart';
+import 'package:birthdayku/data/promo_data.dart';
 import 'package:birthdayku/models/cart_model.dart';
 import 'package:birthdayku/models/product_model.dart';
 import 'package:birthdayku/models/promo_model.dart';
@@ -97,6 +98,11 @@ class _CartDetailsState extends State<CartDetails> {
   void _getPromo(Promo promo) {
     setState(() {
       promoUsed = promo;
+
+      widget.account.promos.remove(promoUsed);
+      Promo usedPromo = promoUsed!;
+      usedPromo.id = "${widget.cart.id}${widget.account.id}";
+      usedPromoInCart.add(usedPromo);
     });
   }
 
@@ -159,6 +165,11 @@ class _CartDetailsState extends State<CartDetails> {
     );
     for (Product product in widget.cart.itemID) {
       reviewCart!.itemID.add(product);
+    }
+    for (Promo promo in usedPromoInCart) {
+      if (promo.id.compareTo("${widget.cart.id}${widget.account.id}") == 0) {
+        promoUsed = promo;
+      }
     }
     super.initState();
   }

@@ -1,5 +1,5 @@
 class Promo {
-  const Promo({
+  Promo({
     required this.activeDate,
     required this.id,
     required this.title,
@@ -7,7 +7,7 @@ class Promo {
     required this.requirement,
   });
 
-  final String id;
+  String id;
   final String title;
   final DateTime activeDate;
   final int value;

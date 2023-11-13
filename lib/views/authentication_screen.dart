@@ -21,6 +21,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   var _enteredEmail = '';
   var _enteredPassword = '';
 
+  bool accountStatus = false;
+
   void _submit() {
     final isValid = _form.currentState!.validate();
 
@@ -30,6 +32,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       for (var user in allUser) {
         if (user.email.compareTo(_enteredEmail) == 0 &&
             user.password.compareTo(_enteredPassword) == 0) {
+          accountStatus = true;
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -40,11 +43,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               ),
             ),
           );
-        } else {
-          const SnackBar(
-            content: Text("account doesn't exist!"),
-          );
         }
+      }
+      if (!accountStatus) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("account doesn't exist!"),
+        ));
       }
     }
   }

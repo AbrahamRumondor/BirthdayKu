@@ -64,9 +64,11 @@ class _CreateDialogState extends State<CreateDialog> {
               nameExist = true;
             }
           }
-
           if (!nameExist) {
-            var cartId = cartData.length + 1;
+            var cartId = (cartData.length +
+                    currentEventData.length +
+                    transactionHistoryData.length) +
+                1;
             cartData.add(
               Cart(
                   id: 'c$cartId',

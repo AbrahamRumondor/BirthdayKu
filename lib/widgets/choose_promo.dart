@@ -128,7 +128,6 @@ class _choosePromoState extends State<choosePromo> {
                   promoItems(_getValidPromo()[index]),
             ),
           ),
-          Text("data"),
         ],
       ),
     );
