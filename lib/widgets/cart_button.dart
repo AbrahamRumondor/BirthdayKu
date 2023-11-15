@@ -75,7 +75,8 @@ Widget getBottomStyle(
     int totalPrice,
     String currentPosition,
     User account,
-    Function(Product item) deleteReviewProduct) {
+    Function(Product item) deleteReviewProduct,
+    Function() refreshCart) {
   Cart? reviewCart;
   if (transactionHistoryDataReview.isNotEmpty && currentPosition == "history") {
     reviewCart = transactionHistoryDataReview
@@ -105,9 +106,16 @@ Widget getBottomStyle(
             if (totalPrice > 0) {
               currentEventData.add(cart);
               cartData.removeWhere((item) => item.id == cart.id);
+              refreshCart();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Your cart has been moved to current events"),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Your cart is empty, please add an item"),
                 ),
               );
             }
@@ -149,10 +157,18 @@ Widget getBottomStyle(
               }
 
               transactionHistoryDataReview.add(newCart);
-              currentEventData.removeWhere((item) => item.id == cart.id);
+              currentEventData.remove(cart);
+              refreshCart();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Your event has been moved to history"),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  // mungkin grgr harganya jadi 0
+                  content: Text("Error"),
                 ),
               );
             }

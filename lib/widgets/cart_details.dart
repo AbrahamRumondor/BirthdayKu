@@ -15,11 +15,13 @@ class CartDetails extends StatefulWidget {
       {super.key,
       required this.cart,
       required this.account,
-      required this.currentPosition});
+      required this.currentPosition,
+      required this.refreshCart});
 
   final Cart cart;
   final User account;
   final String currentPosition;
+  final Function() refreshCart;
 
   @override
   State<CartDetails> createState() => _CartDetailsState();
@@ -339,13 +341,13 @@ class _CartDetailsState extends State<CartDetails> {
             height: 20,
           ),
           getBottomStyle(
-            widget.cart,
-            context,
-            int.parse(getTotalPrice()),
-            widget.currentPosition,
-            widget.account,
-            deleteReviewButton,
-          )
+              widget.cart,
+              context,
+              int.parse(getTotalPrice()),
+              widget.currentPosition,
+              widget.account,
+              deleteReviewButton,
+              widget.refreshCart)
         ],
       ),
     );

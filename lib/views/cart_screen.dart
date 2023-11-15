@@ -2,6 +2,7 @@ import 'package:birthdayku/data/cart_data.dart';
 import 'package:birthdayku/models/cart_model.dart';
 import 'package:birthdayku/models/user_model.dart';
 import 'package:birthdayku/widgets/cart_details.dart';
+import 'package:birthdayku/widgets/delete_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:birthdayku/widgets/create_dialog.dart';
 
@@ -30,13 +31,34 @@ class _CartScreenState extends State<CartScreen> {
     super.initState();
   }
 
+  ButtonStyle _changeButtonColor(String check) {
+    return (button.compareTo(check) == 0)
+        ? ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromRGBO(156, 45, 65, 1),
+            foregroundColor: Colors.white,
+          )
+        : ElevatedButton.styleFrom(backgroundColor: Colors.white);
+  }
+
+  void deleteCart(Cart cart) {
+    setState(() {
+      cartData.remove(cart);
+    });
+  }
+
+  void refreshCart() {
+    setState(() {
+      button = button;
+    });
+  }
+
   Widget cartItems(Cart cart) {
     return Column(
       children: [
         Container(
           margin: const EdgeInsets.only(
-            left: 30,
-            right: 30,
+            left: 20,
+            right: 20,
           ),
           decoration: BoxDecoration(
             boxShadow: [
@@ -67,7 +89,7 @@ class _CartScreenState extends State<CartScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.5,
+                            width: MediaQuery.of(context).size.width * 0.47,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -115,14 +137,48 @@ class _CartScreenState extends State<CartScreen> {
                                   settings:
                                       RouteSettings(name: "/cart_details"),
                                   builder: (context) => CartDetails(
-                                      cart: cart,
-                                      account: widget.account,
-                                      currentPosition: button),
+                                    cart: cart,
+                                    account: widget.account,
+                                    currentPosition: button,
+                                    refreshCart: refreshCart,
+                                  ),
                                 ),
                               );
                             },
                             child: const Text('Detail'),
                           ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          button.compareTo("cart") == 0
+                              ? ElevatedButton(
+                                  style: ButtonStyle(
+                                    minimumSize:
+                                        MaterialStateProperty.all(Size(0, 0)),
+                                    maximumSize:
+                                        MaterialStateProperty.all(Size(50, 50)),
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.all(8)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            5.0), // Adjust the radius as needed
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => delete_dialog(
+                                        cart: cart,
+                                        deleteCart: deleteCart,
+                                      ),
+                                    );
+                                  },
+                                  child: const Icon(Icons.delete_outline),
+                                )
+                              : SizedBox(),
                         ],
                       ),
                     ),
@@ -228,6 +284,10 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      button = button;
+    });
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -236,25 +296,31 @@ class _CartScreenState extends State<CartScreen> {
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           ElevatedButton(
+            style: _changeButtonColor("cart"),
             onPressed: () {
               setState(() {
                 button = "cart";
+                _changeButtonColor("cart");
               });
             },
             child: Text("Cart"),
           ),
           ElevatedButton(
+            style: _changeButtonColor("current"),
             onPressed: () {
               setState(() {
                 button = "current";
+                _changeButtonColor("current");
               });
             },
             child: Text("Current Events"),
           ),
           ElevatedButton(
+            style: _changeButtonColor("history"),
             onPressed: () {
               setState(() {
                 button = "history";
+                _changeButtonColor("history");
               });
             },
             child: Text("History"),
